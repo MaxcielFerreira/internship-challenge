@@ -30,6 +30,12 @@ class MMCView(APIView):
             inicio  = serializers.validated_data['inicio']
             fim  = serializers.validated_data['fim']
 
+            maxIntervalo = 10
+            if (fim - inicio + 1) > maxIntervalo:
+                return Response(
+                    {"error": f"O intervalo muito grande entre os numeros, Máximo permitido: {maxIntervalo} números"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
             resultado = mmc(inicio,fim)
             return Response(resultado, status=status.HTTP_200_OK)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
